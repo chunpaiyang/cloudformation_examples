@@ -1,0 +1,4 @@
+
+Resources:
+    ex1:
+      Type: AWS::S3::Bucket
