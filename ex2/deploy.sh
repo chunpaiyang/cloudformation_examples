@@ -1,7 +1,6 @@
 #!/bin/sh
 
-aws s3 mb s3://mybucket.yourname.com
-
-aws cloudformation delete-stack --stack-name ex2
-aws cloudformation package --template upload.template --s3-bucket mybucket.yourname.com --output-template-file upload_output.template
-aws cloudformation deploy --template-file upload_output.template --stack-name ex2 --capabilities CAPABILITY_IAM
+aws s3 cp tmp/appspec.yml s3://mybucket.yourname.com/appspec.yml
+aws deploy register-application-revision --application-name LambdaCodeDeployTest  --s3-location bucket=mybucket.yourname.com,key=appspec.yml,bundleType=YAML
+aws deploy get-application-revision --application-name LambdaCodeDeployTest --s3-location bucket=mybucket.yourname.com,key=appspec.yml,bundleType=YAML
+aws deploy create-deployment --s3-location bucket=mybucket.yourname.com,key=appspec.yml,bundleType=YAML --application-name LambdaCodeDeployTest --deployment-group-name LambdaCodeDeployTest

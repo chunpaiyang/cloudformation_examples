@@ -7,3 +7,8 @@ Resources:
             Handler: index.handler
             Runtime: nodejs8.10
             CodeUri: tmp
+
+Outputs:
+  LambdaFunctionName:
+    Description: The lambda function name
+    Value: !Ref Ex2Function

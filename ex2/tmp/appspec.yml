@@ -1,0 +1,9 @@
+version: 0.0
+Resources:
+  - Ex2Function:
+      Type: AWS::Lambda::Function
+      Properties:
+        Name: "ex2-Ex2Function-1XFSB2TGOV9II"
+        Alias: "dev" # not ex2-Ex2Function-1XFSB2TGOV9II:dev
+        CurrentVersion: "4" # version must exist and is current version
+        TargetVersion: "5"  # version must exist
