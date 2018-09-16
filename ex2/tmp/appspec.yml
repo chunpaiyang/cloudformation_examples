@@ -1,9 +1,0 @@
-version: 0.0
-Resources:
-  - Ex2Function:
-      Type: AWS::Lambda::Function
-      Properties:
-        Name: ex2-Ex2Function-1XFSB2TGOV9II
-        Alias: dev
-        CurrentVersion: 22
-        TargetVersion: 23

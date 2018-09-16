@@ -1,6 +1,6 @@
 #!/bin/bash -xe
 
-stachName=""
+stackName="ex2"
 aliasName="dev"
 appSpecDir="tmp"
 appSpecName="appspec.yml"
@@ -51,10 +51,10 @@ aws s3 mb s3://mybucket.yourname.com
 
 # Step2. Upload code with cloudformation. Stackname is ex2
 aws cloudformation package --template upload.template --s3-bucket mybucket.yourname.com --output-template-file upload_output.template
-aws cloudformation deploy --template-file upload_output.template --stack-name ex2 --capabilities CAPABILITY_IAM
+aws cloudformation deploy --template-file upload_output.template --stack-name ${stackName} --capabilities CAPABILITY_IAM
 
 # get deploy lambda function name
-fname=`aws cloudformation  describe-stacks --stack-name ex2 --query "Stacks[0].Outputs[0].OutputValue" --output text`
+fname=`aws cloudformation  describe-stacks --stack-name ${stackName} --query "Stacks[0].Outputs[0].OutputValue" --output text`
 
 # get publish lambda function and get version
 version=`aws lambda publish-version --function-name $fname | jq -r .Version`
