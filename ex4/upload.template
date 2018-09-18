@@ -1,0 +1,5 @@
+Resources:
+  MyRestApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: 'ex4apigateway'
