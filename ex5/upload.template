@@ -1,0 +1,13 @@
+Resources:
+  MyRestApi:
+      Type: AWS::ApiGateway::RestApi
+      Properties:
+        Name: 'ex4apigateway'
+
+Outputs:
+  RestAPIName:
+    Description: The rest api name
+    Value: !Ref MyRestApi
+  RestAPIArn:
+    Description: The rest api name
+    Value: !Join [':', [!Ref 'AWS::Region', !Ref 'AWS::AccountId', !Ref MyRestApi, "/*"]]
