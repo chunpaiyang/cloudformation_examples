@@ -9,3 +9,5 @@
     - Create a apigateway
 # ex5:
     - Demo how to get apigaetway id and arn
+# ex6:
+	- Demo how to set stage for apigateway
