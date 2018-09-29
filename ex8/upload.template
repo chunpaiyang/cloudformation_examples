@@ -1,0 +1,85 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  CheckerLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code: ./tmp.zip
+      Handler: index.handler
+      Role:
+        Fn::GetAtt:
+        - CheckerLambdaRole
+        - Arn
+      Runtime: nodejs8.10
+      Timeout: 45
+  CheckerLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+  apiGateway:
+      Type: AWS::ApiGateway::RestApi
+      Properties:
+        Name: 'ex8apigateway'
+        Body:
+          swagger: '2.0'
+          info:
+            description: This is a simple API
+            version: 1.0.0
+            title: Simple Inventory API
+
+          paths:
+            /:
+              post:
+                description: Adds an item to the system
+                consumes:
+                - application/json
+                produces:
+                - application/json
+                parameters:
+                - in: body
+                  name: inventoryItem
+                  description: Inventory item to add
+                  schema:
+                    $ref: '#/definitions/InventoryItem'
+                responses:
+                  "200":
+                    description: item created
+                x-amazon-apigateway-integration:
+                  uri: !Sub
+                    - "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations"
+                    - lambdaArn: !GetAtt "CheckerLambda.Arn"
+                  passthroughBehavior: when_no_match
+                  httpMethod: POST
+                  type: aws_proxy
+
+          definitions:
+            InventoryItem:
+              type: object
+              required:
+              - id
+              properties:
+                id:
+                  type: string
+
+  lambdaApiGatewayInvoke:
+    Type: "AWS::Lambda::Permission"
+    Properties:
+      Action: "lambda:InvokeFunction"
+      FunctionName: !GetAtt "CheckerLambda.Arn"
+      Principal: "apigateway.amazonaws.com"
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${apiGateway}/*/POST/"
+
+  apiGatewayDeploymentStage:
+    Type: "AWS::ApiGateway::Deployment"
+    Properties:
+      RestApiId: !Ref "apiGateway"
+      StageName: "dev"

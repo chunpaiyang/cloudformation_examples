@@ -28,21 +28,40 @@ Resources:
   apiGateway:
       Type: AWS::ApiGateway::RestApi
       Properties:
-        Name: 'ex6apigateway'
+        Name: 'ex7apigateway'
+        Body:
+          swagger: '2.0'
+          info:
+            description: This is a simple API
+            version: 1.0.0
+            title: Simple Inventory API
 
-  apiGatewayRootMethod:
-    Type: "AWS::ApiGateway::Method"
-    Properties:
-      AuthorizationType: "NONE"
-      HttpMethod: "POST"
-      Integration:
-        IntegrationHttpMethod: "POST"
-        Type: "AWS_PROXY"
-        Uri: !Sub
-          - "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations"
-          - lambdaArn: !GetAtt "CheckerLambda.Arn"
-      ResourceId: !GetAtt "apiGateway.RootResourceId"
-      RestApiId: !Ref "apiGateway"
+          paths:
+            /:
+              post:
+                description: Adds an item to the system
+                consumes:
+                - application/json
+                produces:
+                - application/json
+                parameters:
+                - in: body
+                  name: inventoryItem
+                  description: Inventory item to add
+                  schema:
+                    $ref: '#/definitions/InventoryItem'
+                responses:
+                  "200":
+                    description: item created
+
+          definitions:
+            InventoryItem:
+              type: object
+              required:
+              - id
+              properties:
+                id:
+                  type: string
 
   lambdaApiGatewayInvoke:
     Type: "AWS::Lambda::Permission"
@@ -52,10 +71,3 @@ Resources:
       Principal: "apigateway.amazonaws.com"
       SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${apiGateway}/*/POST/"
 
-  apiGatewayDeploymentStage:
-    Type: "AWS::ApiGateway::Deployment"
-    DependsOn:
-      - "apiGatewayRootMethod"
-    Properties:
-      RestApiId: !Ref "apiGateway"
-      StageName: "dev"

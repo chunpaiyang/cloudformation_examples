@@ -11,3 +11,9 @@
     - Demo how to get apigaetway id and arn
 # ex6:
 	- Demo how to set stage for apigateway
+# ex7:
+	- Demo how to create apigateway with OpenAPI(but not integrated
+	with lambda yet)
+# ex8:
+	- Demo how to create apigateway with OpenAPI and integrated
+	with lambda
