@@ -8,7 +8,7 @@
 # ex4:
     - Create a apigateway
 # ex5:
-    - Demo how to get apigaetway id and arn
+    - Demo how to use 'Output' to display apigaetway id and arn
 # ex6:
 	- Demo how to set stage for apigateway
 # ex7:
@@ -16,4 +16,7 @@
 	with lambda yet)
 # ex8:
 	- Demo how to create apigateway with OpenAPI and integrated
-	with lambda
+	with lambda.
+# ex9:
+	- Demo how to create apigateway with OpenAPI in S3 and integrated
+	with lambda.(BodyS3Location method)

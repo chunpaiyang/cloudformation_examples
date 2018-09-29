@@ -1,0 +1,15 @@
+  apiGateway:
+    Properties:
+      BodyS3Location:
+        Bucket: openapi.yourname.com
+        Key: openapi.yaml
+      Name: ex9apigateway
+    Type: AWS::ApiGateway::RestApi
+  lambdaApiGatewayInvoke:
+    Type: "AWS::Lambda::Permission"
+    Properties:
+      Action: "lambda:InvokeFunction"
+      FunctionName: !GetAtt "CheckerLambda.Arn"
+      Principal: "apigateway.amazonaws.com"
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${apiGateway}/*/POST/"
+

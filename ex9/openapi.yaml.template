@@ -1,0 +1,36 @@
+swagger: '2.0'
+info:
+  description: This is a simple API
+  version: 1.0.0
+  title: Simple Inventory API
+
+paths:
+  /:
+    post:
+      description: Adds an item to the system
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: inventoryItem
+        description: Inventory item to add
+        schema:
+          $ref: '#/definitions/InventoryItem'
+      responses:
+        "200":
+          description: item created
+      x-amazon-apigateway-integration:
+        uri: %NameIntLambda%
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: aws_proxy
+
+definitions:
+  InventoryItem:
+    type: object
+    required:
+    - id
+    properties:
+
