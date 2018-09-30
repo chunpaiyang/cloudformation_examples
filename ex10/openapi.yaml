@@ -2,7 +2,7 @@ swagger: '2.0'
 info:
   description: This is a simple API
   version: 1.0.0
-  title: Simple Inventory API
+  title: ex10apigateway
 
 paths:
   /:
@@ -22,7 +22,13 @@ paths:
         "200":
           description: item created
       x-amazon-apigateway-integration:
-        uri: %NameIntLambda%
+        uri:
+          Fn::Sub:
+          - "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations"
+          - lambdaArn:
+              Fn::GetAtt:
+                - CheckerLambda
+                - Arn
         passthroughBehavior: when_no_match
         httpMethod: POST
         type: aws_proxy

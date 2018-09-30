@@ -12,11 +12,14 @@
 # ex6:
 	- Demo how to set stage for apigateway
 # ex7:
-	- Demo how to create apigateway with OpenAPI(but not integrated
+	- Demo how to create apigateway with OpenAPI(but not integrate
 	with lambda yet)
 # ex8:
-	- Demo how to create apigateway with OpenAPI and integrated
+	- Demo how to create apigateway with OpenAPI and integrate
 	with lambda.
 # ex9:
-	- Demo how to create apigateway with OpenAPI in S3 and integrated
+	- Demo how to create apigateway with OpenAPI in S3 and integrate
 	with lambda.(BodyS3Location method)
+# ex10:
+	- Demo how to create apigateway with OpenAPI in S3 and integrate
+	with lambda.(AWS::Include method)
